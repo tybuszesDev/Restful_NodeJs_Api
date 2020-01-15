@@ -1,13 +1,21 @@
 const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv/config');
 
-const app = express();
+const app = express(); // express giving us the ability the ability to create routes in simple way
 
-// express giving us the ability the ability to create routes in simple way
+//Import Routes Middleware
 
-//Middlewares we can use it for example to make some autentification
-app.use('/posts', () => {
-    console.log('This is a middleware running')
-})
+const postsRoute = require('./routes/posts')
+const usersRoute = require('./routes/users')
+
+app.use('/posts', postsRoute);
+app.use('/users', usersRoute);
+
+//Middlewares, we can use it for example to make some autentification
+//app.use('/posts', () => {
+//    console.log('This is a middleware running')
+//})
 
 //ROUTES
 app.get('/', (req,res) => {
@@ -15,11 +23,14 @@ app.get('/', (req,res) => {
 
 });
 
-app.get('/posts', (req,res) => {
-    res.send('We are on posts');
 
-});
-
+//Connect to DB
+mongoose.connect( process.env.DB_CONNECTION,
+{ useUnifiedTopology: true , 
+ useNewUrlParser: true,
+ useCreateIndex: true },
+  () => console.log('connected to DB!')
+ );
 
 //How to start listening the server
 app.listen(3000);
