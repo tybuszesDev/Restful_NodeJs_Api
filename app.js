@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 require('dotenv/config');
+
+
 
 const app = express(); // express giving us the ability the ability to create routes in simple way
 
@@ -9,6 +13,8 @@ const app = express(); // express giving us the ability the ability to create ro
 const postsRoute = require('./routes/posts')
 const usersRoute = require('./routes/users')
 
+app.use(cors());
+app.use(bodyParser.json()); // middleware to parse the json format using bodyparser library
 app.use('/posts', postsRoute);
 app.use('/users', usersRoute);
 
